@@ -86,7 +86,7 @@ query {
 
 ```
 
-for more check DOCS and SCHEMA section in graph ql playground
+for more check DOCS and SCHEMA section in graphQl playground (`localhost:3000/graphql`)
 
 ## Run tests
 
