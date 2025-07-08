@@ -3,13 +3,13 @@ import { Injectable } from '@nestjs/common';
 import { CreateStudentInput } from './create-student.input';
 import { Student } from './student.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MongoRepository } from 'typeorm';
 
 @Injectable()
 export class StudentService {
   constructor(
     @InjectRepository(Student)
-    private readonly studentRepository: Repository<Student>,
+    private readonly studentRepository: MongoRepository<Student>,
   ) {}
 
   async getStudentById(id: string): Promise<Student> {
@@ -36,5 +36,21 @@ export class StudentService {
     });
 
     return this.studentRepository.save(student);
+  }
+
+  async getStudents(studentIds: string[]): Promise<Student[]> {
+    if (!studentIds || studentIds.length === 0) {
+      return [];
+    }
+
+    const students = await this.studentRepository.find({
+      where: {
+        id: {
+          $in: studentIds,
+        },
+      },
+    });
+
+    return students;
   }
 }

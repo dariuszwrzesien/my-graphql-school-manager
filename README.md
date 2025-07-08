@@ -30,20 +30,45 @@ Visit: `localhost:3000/graphql`
 
 ```graphql
 mutation {
+  createStudent(
+    createStudentInput: { firstName: "Stefan", lastName: "Kudłaty" }
+  ) {
+    id
+    firstName
+    lastName
+  }
+}
+
+mutation {
   createLesson(
     createLessonInput: {
-      name: "Lekcja1"
+      name: "Lekcja 123 z uczniami"
       startDate: "2025-07-02T11:51:41.403Z"
       endDate: "2025-07-02T11:51:41.403Z"
+      students: [
+        "15a2fdcb-9a9d-415c-84c5-993ce238e85b"
+        "697bf7b5-6bad-4cad-9eb4-ceefab026cb0"
+      ]
     }
   ) {
     id
     name
+    students {
+      firstName
+      lastName
+    }
   }
 }
-```
 
-````graphql
+mutation {
+  assignStudentsToLesson(assignStudentToLessonInput: {
+    lessonId: "6ecf0615-bd89-4292-b4d5-1d6de2b4daad"
+    studentIds: ["947864d9-dd66-4a8a-bdff-fb4befe6360f", "64f43bef-d6b0-411e-b130-e8f0d452b13e"]
+  }){
+    id, name
+  }
+}
+
 query {
   query {
   lesson(id: "0aeedc66-736f-4902-8cc7-c373b05e6bbf"){
@@ -51,16 +76,17 @@ query {
   }
 }
 }
-```
 
-```
 //get All lessons
 query {
   lessons {
     name
   }
 }
+
 ```
+
+for more check DOCS and SCHEMA section in graph ql playground
 
 ## Run tests
 
@@ -78,4 +104,3 @@ $ npm run test:cov
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
-````
